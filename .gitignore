@@ -1,0 +1,16 @@
+# Chặn thư mục build của Java
+backend/target/
+bin/
+
+# Chặn file rác của Eclipse/VS Code
+.settings/
+.project
+.classpath
+.factorypath
+.vscode/
+
+# CHẶN KHO ẢNH TRUYỆN (Rất nặng, ko đưa lên Git)
+manga_storage/
+
+# Chặn log rác
+*.log

@@ -1,0 +1,43 @@
+services:
+  # KHỐI 1: CƠ SỞ DỮ LIỆU ORACLE
+  oracle-db:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle-db
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=DOUJIN_PASS
+      - APP_USER=DOUJIN_APP
+      - APP_USER_PASSWORD=DOUJIN_PASS
+    volumes:
+      - ./oracle_data:/opt/oracle/oradata
+    restart: always
+
+  # KHỐI 2: BACKEND JAVA
+  manga-api:
+    build: ./backend
+    container_name: manga-api
+    depends_on:
+      - oracle-db
+    environment:
+      # Nối Java vào Oracle dùng tên container thay cho IP
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521/FREE
+      # Cấp 3GB RAM cho Java xẻ PDF
+      - JAVA_OPTS=-Xmx3072m -Xms1024m 
+    volumes:
+      - ./manga_storage:/app/manga_storage
+    restart: always
+
+  # KHỐI 3: FRONTEND NGINX
+  manga-web:
+    image: nginx:alpine
+    container_name: manga-web
+    ports:
+      - "8080:80" # Bạn có thể đổi sang 80 nếu bản Kiến nãy tắt rồi
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./manga_storage:/usr/share/nginx/html/manga_storage
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - manga-api
+    restart: always

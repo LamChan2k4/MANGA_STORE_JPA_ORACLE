@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.1</version> <!-- Đổi về bản 3.4.1 để ổn định nhất -->
+		<relativePath/> 
+	</parent>
+	
+	<groupId>com.example</groupId>
+	<artifactId>web_doushijin</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>web_doushijin</name>
+	<description>Dự án bán truyện tranh cho em gái</description>
+
+	<properties>
+		<java.version>21</java.version> <!-- Chạy với Java 21 xịn xò của bạn -->
+	</properties>
+
+	<dependencies>
+		<!-- 1. Bộ khung Spring Boot cơ bản -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 2. Thư viện làm Web (Lễ tân - Controller) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- 3. Trái tim Database (Thủ kho - JPA) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- 4. Driver kết nối Oracle (Thông dịch viên) -->
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc11</artifactId> <!-- Dùng ojdbc11 cho Java 17/21 tốt hơn -->
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Thư viện hỗ trợ Test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.pdfbox</groupId>
+		    <artifactId>pdfbox</artifactId>
+		    <version>2.0.27</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
