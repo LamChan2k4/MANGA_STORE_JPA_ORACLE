@@ -4,7 +4,7 @@ services:
     image: gvenzl/oracle-free:latest
     container_name: oracle-db
     ports:
-      - "1521:1521"
+      - "1522:1521"
     environment:
       - ORACLE_PASSWORD=DOUJIN_PASS
       - APP_USER=DOUJIN_APP
@@ -13,19 +13,21 @@ services:
       - ./oracle_data:/opt/oracle/oradata
     restart: always
 
-  # KHỐI 2: BACKEND JAVA
+# ... các phần trên giữ nguyên
   manga-api:
     build: ./backend
     container_name: manga-api
-    depends_on:
-      - oracle-db
     environment:
-      # Nối Java vào Oracle dùng tên container thay cho IP
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521/FREE
-      # Cấp 3GB RAM cho Java xẻ PDF
+      # SỬA LẠI ĐOẠN NÀY
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@//lamoracle:1521/XE
+      - SPRING_DATASOURCE_USERNAME=DOUJIN_APP
+      - SPRING_DATASOURCE_PASSWORD=DOUJIN_PASS
+      # ... các phần dưới giữ nguyên
       - JAVA_OPTS=-Xmx3072m -Xms1024m 
     volumes:
       - ./manga_storage:/app/manga_storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
     restart: always
 
   # KHỐI 3: FRONTEND NGINX

@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D-SHIN MANGA | Nền tảng số 1</title>
+    <!-- Lưu ý: Style có thể tách ra file riêng hoặc để chung -->
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- 1. THANH HEADER (Ghi điểm về UX) -->
+    <!-- 1. THANH HEADER -->
     <header class="app-header">
         <div class="header-container">
             <div class="logo" onclick="showView('home-view')">
@@ -24,7 +25,7 @@
                         <i class="fa-solid fa-gem"></i> <span id="user-balance">0</span> VNĐ
                     </div>
                     <span id="display-username" style="margin: 0 15px; font-weight: 600; color: #fff;"></span>
-                    <button onclick="handleDeposit()" style="margin-left: 10px; background: #27ae60; padding: 2px 8px; font-size: 11px;">+ NẠP</button>
+                    <button onclick="handleDeposit()" style="margin-left: 10px; background: #27ae60; border:none; border-radius:4px; color:white; cursor:pointer; padding: 2px 8px; font-size: 11px;">+ NẠP</button>
                     <button class="btn-logout" onclick="handleLogout()">Thoát</button>
                 </div>
 
@@ -45,31 +46,74 @@
         <section id="home-view" class="view">
             <div class="hero-banner">
                 <h1>Chào mừng đến với D-Shin Store</h1>
-                <p>Nạp truyện Oneshot bằng PDF, xẻ ảnh tự động cực chất.</p>
+                <p>Hệ thống lõi Java Spring Boot - Kết nối Oracle Database.</p>
             </div>
             <div class="section-header">
                 <h2>📚 TRUYỆN MỚI CẬP NHẬT</h2>
-                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="Tìm truyện...">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm nhanh...">
             </div>
-            <div id="mangaGrid" class="manga-grid"></div>
+            <div id="mangaGrid" class="manga-grid">
+                <!-- Truyện sẽ nổ vào đây từ Javascript -->
+            </div>
         </section>
 
         <!-- B. CHI TIẾT TRUYỆN -->
         <section id="detail-view" class="view" style="display:none;">
             <div class="container">
-                <button class="btn-secondary" onclick="showView('home-view')">⬅ Quay lại cửa hàng</button>
+                <button class="btn-secondary" onclick="showView('home-view')" style="margin-bottom:15px">⬅ Quay lại cửa hàng</button>
                 <div class="book-detail-card">
-                    <div class="detail-left"><img id="detail-cover" src=""></div>
+                    <div class="detail-left">
+                        <img id="detail-cover" src="https://placehold.jp/300x450.png" alt="Bìa truyện">
+                    </div>
                     <div class="detail-right">
-                        <h1 id="detail-title"></h1>
-                        <p class="author">Tác giả: <span id="detail-author"></span></p>
-                        <div id="chapterList" class="chapter-list"></div>
+                        <!-- Tiêu đề truyện + Nút sửa sẽ hiện ở đây -->
+                        <h1 id="detail-title">Loading...</h1> 
+                        <p class="author">Tác giả: <span id="detail-author">...</span></p>
+                        <hr style="border: 1px solid #333; margin: 15px 0;">
+                        <h3 style="color:#27ae60">Danh sách Chương:</h3>
+                        <div id="chapterList" class="chapter-list">
+                            <!-- Các chapter mua/đọc sẽ hiện ở đây -->
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- C. ĐĂNG NHẬP / ĐĂNG KÝ (NƠI THIẾU NÚT QUAY LẠI) -->
+        <!-- [MỚI] F. TRANG CHỈNH SỬA TRUYỆN (EDIT) -->
+        <section id="edit-view" class="view" style="display:none;">
+            <div class="auth-card" style="max-width: 600px; border: 1px solid #d35400;">
+                <h2 style="color: #e67e22;"><i class="fa-solid fa-pen-to-square"></i> Hiệu Chỉnh Dữ Liệu</h2>
+                <p style="font-size: 12px; color: #aaa; text-align: center; margin-bottom: 20px;">Dành cho Admin - Cập nhật trực tiếp vào Oracle</p>
+                
+                <div style="text-align: left; margin-bottom: 10px;">
+                    <label>Tên truyện:</label>
+                    <input type="text" id="edit-title" style="width: 100%; padding: 10px; margin-top:5px; background: #222; border: 1px solid #444; color: white;">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 10px;">
+                    <label>Tác giả:</label>
+                    <input type="text" id="edit-author" style="width: 100%; padding: 10px; margin-top:5px; background: #222; border: 1px solid #444; color: white;">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 10px;">
+                    <label>Giá bán (VNĐ):</label>
+                    <input type="number" id="edit-price" style="width: 100%; padding: 10px; margin-top:5px; background: #222; border: 1px solid #444; color: white;">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 20px;">
+                    <label>Link ảnh bìa:</label>
+                    <input type="text" id="edit-imageUrl" style="width: 100%; padding: 10px; margin-top:5px; background: #222; border: 1px solid #444; color: white;">
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button onclick="saveEditManga()" class="btn-primary" style="background: #27ae60;"><i class="fa-solid fa-save"></i> Lưu Thay Đổi</button>
+                    <button onclick="deleteManga()" class="btn-primary" style="background: #c0392b;"><i class="fa-solid fa-trash"></i> Xóa Truyện</button>
+                    <button onclick="showView('home-view')" class="btn-secondary">Huỷ Bỏ</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- C. ĐĂNG NHẬP -->
         <section id="login-view" class="view" style="display:none;">
             <div class="auth-card">
                 <h2>🔑 Đăng Nhập</h2>
@@ -80,6 +124,7 @@
             </div>
         </section>
 
+        <!-- D. ĐĂNG KÝ -->
         <section id="register-view" class="view" style="display:none;">
             <div class="auth-card">
                 <h2>✨ Đăng Ký Tài Khoản</h2>
@@ -90,53 +135,50 @@
             </div>
         </section>
 
-        <!-- D. QUẢN TRỊ ADMIN (NỔI DUNG & PDF) -->
+        <!-- E. QUẢN TRỊ ADMIN (NỔI DUNG & PDF) -->
         <section id="admin-view" class="view" style="display:none;">
             <div class="container">
                 <button class="btn-secondary" style="margin-bottom:20px" onclick="showView('home-view')">🏠 Về Trang Chủ</button>
                 <div class="admin-panel-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-                    <div class="admin-card">
-                        <h3>1. Tạo truyện</h3>
-                        <input type="text" id="add-title" placeholder="Tên truyện">
-                        <input type="text" id="add-author" placeholder="Tác giả">
-                        <input type="number" id="add-price" placeholder="Giá">
-                        <input type="text" id="add-imageUrl" placeholder="Link ảnh bìa">
-                        <button onclick="addManga()" class="btn-primary">Ghi vào Oracle</button>
+                    <!-- Thẻ 1: Tạo Metadata -->
+                    <div class="admin-card" style="background: #1a1a1a; padding: 20px; border-radius: 8px;">
+                        <h3 style="color:#3498db">1. Khởi tạo Truyện Mới</h3>
+                        <input type="text" id="add-title" placeholder="Tên truyện" style="display:block; width:100%; margin-bottom:10px; padding:8px;">
+                        <input type="text" id="add-author" placeholder="Tác giả" style="display:block; width:100%; margin-bottom:10px; padding:8px;">
+                        <input type="number" id="add-price" placeholder="Giá tiền mặc định" style="display:block; width:100%; margin-bottom:10px; padding:8px;">
+                        <input type="text" id="add-imageUrl" placeholder="Link ảnh bìa (URL)" style="display:block; width:100%; margin-bottom:10px; padding:8px;">
+                        <button onclick="addManga()" class="btn-primary" style="width:100%">Ghi vào Oracle</button>
                     </div>
-                    <div class="admin-card">
-                        <h3>2. Xẻ PDF</h3>
-                        <p id="target-book-label">Chưa chọn truyện</p>
-                        <input type="file" id="pdfFile" accept=".pdf">
-                        <button onclick="uploadMangaPdf()" class="btn-accent">🚀 Xẻ ảnh ngay</button>
-                        <div id="status" class="status-msg">Sẵn sàng</div>
+                    
+                    <!-- Thẻ 2: Nạp PDF -->
+                    <div class="admin-card" style="background: #1a1a1a; padding: 20px; border-radius: 8px;">
+                        <h3 style="color:#e74c3c">2. Xử lý PDF (Java PDFBox)</h3>
+                        <p style="font-size:13px; color:#ccc">Chọn một cuốn sách ngoài trang chủ, rồi vào đây nạp file.</p>
+                        <p id="target-book-label" style="font-weight:bold; color:#f1c40f; border: 1px dashed #666; padding: 5px;">🔴 Chưa chọn truyện nào!</p>
+                        
+                        <input type="file" id="pdfFile" accept=".pdf" style="margin: 15px 0;">
+                        <button onclick="uploadMangaPdf()" class="btn-primary" style="background:#e67e22; width:100%">🚀 Xẻ ảnh & Upload</button>
+                        <div id="status" class="status-msg" style="margin-top:10px; color:#2ecc71;">Sẵn sàng</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- E. TRÌNH ĐỌC (MẶC ĐỊNH ẨN) -->
+        <!-- F. TRÌNH ĐỌC (FULL SCREEN) -->
         <section id="reader-view" class="view" style="display:none; background:#000; position:fixed; top:0; left:0; width:100%; height:100%; z-index:5000; overflow-y:auto;">
-            <div class="reader-nav" style="position:sticky; top:0; background:#111; padding:15px; display:flex; justify-content:space-between;">
-                <button onclick="showView('detail-view')">✖ Đóng</button>
-                <span id="reading-title"></span>
-                <button onclick="window.scrollTo(0,0)">↑ TOP</button>
+            <div class="reader-nav" style="position:sticky; top:0; background:rgba(20,20,20,0.9); padding:15px; display:flex; justify-content:space-between; align-items: center; border-bottom: 1px solid #333;">
+                <button onclick="showView('detail-view')" style="background:transparent; border:1px solid #555; color:white; padding: 5px 10px; cursor: pointer;">✖ Đóng</button>
+                <span id="reading-title" style="color:white; font-weight:bold;">Reading...</span>
+                <button onclick="window.scrollTo(0,0)" style="background:transparent; border:1px solid #555; color:white; padding: 5px 10px; cursor: pointer;">↑ TOP</button>
             </div>
-            <div id="imageLoader" style="max-width:800px; margin:0 auto;"></div>
+            <!-- Ảnh truyện sẽ load vào đây -->
+            <div id="imageLoader" style="max-width:800px; margin:0 auto; padding-bottom: 50px;"></div>
         </section>
 
     </main>
 
-    <!-- Popup Sửa -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <h3>Sửa truyện</h3>
-            <input type="hidden" id="edit-id">
-            <input type="text" id="edit-title"><input type="number" id="edit-price">
-            <button onclick="saveEdit()" class="btn-primary">Lưu</button>
-            <button onclick="closeModal()">Đóng</button>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <!-- Nạp file Javascript logic -->
+    <!-- Đảm bảo tên file js của bạn đúng là script.js (hoặc đổi thành index.js nếu cần) -->
+    <script src="script.js"></script> 
 </body>
 </html>
